@@ -1,0 +1,29 @@
+{
+  "name": "create",
+  "version": "1.0.0",
+  "description": "Template repository for framework.",
+  "main": "index.js",
+  "scripts": {
+    "app-dev": "vite",
+    "build": "vite build",
+    "dev": "concurrently \"npm run app-dev\" \"npm run server\"",
+    "server": "npx tsx ./server/index.ts",
+    "start": "node ./dist/index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "nolita": "file:../hdr-browser",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "express": "^4.19.2",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.4",
+    "vite": "^5.2.8"
+  }
+}
