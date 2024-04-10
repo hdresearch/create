@@ -1,37 +1,49 @@
 import React from 'react'
 import './App.css'
-import { listenToStream, stopListening } from './lib/events'
+import { AgentEvent, listenToStream, stopListening } from './lib/events';
+
+type Status = 'working' | 'success' | 'fail' | 'idle';
 
 function App() {
   const [url, setUrl] = React.useState('https://www.google.com');
   const [objective, setObjective] = React.useState('where can I get food in the west village?');
-  const [status, setStatus] = React.useState('idle');
+  const [status, setStatus] = React.useState<Status>('idle');
   const [events, setEvents] = React.useState<string[]>([]);
   const [restaurants, setRestaurants] = React.useState<string[]>([]);
 
-  const handleEvent = (input) => {
-    const parsedInput = input;
-    console.log(parsedInput);
+  const handleEvent = (input: AgentEvent) => {
     setEvents((prev: string[]) => {
-      if (parsedInput?.restaurants) {
-        setRestaurants(parsedInput.restaurants);
+      if (input?.restaurants) {
+        setRestaurants(input.restaurants);
       }
-      if (parsedInput?.progressAssessment) {
-        return [...prev, `Progress: ${parsedInput.progressAssessment}`];
+      if (input?.progressAssessment) {
+        return [...prev, `Progress: ${input.progressAssessment}`];
       }
       return prev;
     });
 
-    if (parsedInput?.result) {
-      if (parsedInput.result.kind === "ObjectiveComplete") {
+    if (input?.result) {
+      if (input.result.kind === "ObjectiveComplete") {
         setStatus('success')
-        setEvents((prev: string[]) => [...prev, `Success: ${parsedInput.result.result.progressAssessment}`]);
-      } else if (parsedInput.result.kind === "ObjectiveFailed") {
+        setEvents((prev: string[]) => [...prev, `Success: ${typeof input?.result?.result !== 'string' ? input?.result?.result.progressAssessment : input?.result?.result}`]);
+      } else if (input.result.kind === "ObjectiveFailed") {
         setStatus('fail')
-        setEvents((prev: string[]) => [...prev, `Fail: ${parsedInput.result.result}`]);
+        setEvents((prev: string[]) => [...prev, `Fail: ${input?.result?.result}`]);
       }
     }
   };
+
+  const start = () => {
+        if (status === 'working') {
+          stopListening();
+          setStatus('idle');
+          return;
+        }
+        setStatus('working');
+        setRestaurants([]);
+        setEvents([]);
+        listenToStream(url, objective, handleEvent)
+  }
 
   const newest = events[events.length - 1];
 
@@ -40,15 +52,7 @@ function App() {
     <div className="flex-col space-y-4">
       <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
       <input type="text" value={objective} onChange={(e) => setObjective(e.target.value)} />
-      <button onClick={() => {
-        setStatus('working'); 
-        if (status === 'working') {
-          stopListening();
-          setStatus('idle');
-          return;
-        }
-        listenToStream(url, objective, handleEvent)
-        }}>
+      <button onClick={() => start()}>
           {status !== 'working' ? 'Start' : 'Stop'}
         </button>
         <div className="flex items-center">
@@ -61,15 +65,15 @@ function App() {
   );
 }
 
-const Icon = ({ status }) => {
+const Icon = ({ status }: { status: 'working' | 'success' | 'fail' | 'idle' }) => {
   if (status === 'working') {
-    return <div className="animate-spin h-5 w-5 rounded-full bg-green-500">...</div>
+    return <div className="mr-2 blinker"></div>
   } else if (status === 'success') {
-    return <div className="h-5 w-5 rounded-full bg-green-500">✅</div>
+    return <div className="mr-2">✅</div>
   } else if (status === 'fail') {
-    return <div className="h-5 w-5 rounded-full bg-red-500">❌</div>
+    return <div className="mr-2">❌</div>
   }
-  return <div className="h-5 w-5 rounded-full bg-gray-500">❔</div>
+  return <div className="mr-2">❔</div>
 }
 
 export default App
