@@ -4,6 +4,9 @@ type ObjectiveCompleteResult = {
   kind: "ObjectiveComplete";
   result: {
     progressAssessment: string;
+    objectiveComplete: {
+      restaurants?: string[];
+    }
   };
 };
 
@@ -18,7 +21,7 @@ export type AgentEvent = {
   done?: boolean;
   result?: Result;
   progressAssessment?: string;
-  restaurants?: string[];
+  description?: string;
 };
 export const listenToStream = (
   url: string,
@@ -30,6 +33,7 @@ export const listenToStream = (
   );
   eventSource.onmessage = function (event) {
     const response = JSON.parse(event.data);
+    console.log(response);
     if (response.done) {
       console.log("done");
       eventSource?.close();

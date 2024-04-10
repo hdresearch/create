@@ -15,11 +15,13 @@ function App() {
 
   const handleEvent = (input: AgentEvent) => {
     setEvents((prev: string[]) => {
-      if (input?.restaurants) {
-        setRestaurants(input.restaurants);
-      }
+      if (input?.result?.kind === "ObjectiveComplete") {
+        if (input?.result?.result?.objectiveComplete?.restaurants) {
+          setRestaurants(input?.result?.result?.objectiveComplete?.restaurants);
+        }
+    }
       if (input?.progressAssessment) {
-        return [...prev, `Progress: ${input.progressAssessment}`];
+        return [...prev, `Progress: ${input.description}`];
       }
       return prev;
     });

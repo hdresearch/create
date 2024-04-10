@@ -6,10 +6,10 @@ const providerOptions = {
   provider: process.env.MODEL_PROVIDER,
 };
 
-const chatApi = completionApiBuilder(providerOptions, {
+const modelApi = completionApiBuilder(providerOptions, {
   model: process.env.MODEL,
 });
 
-const agent = new Agent(chatApi);
+const agent = new Agent({ modelApi });
 
 export default agent;
