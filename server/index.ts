@@ -2,7 +2,6 @@ import express from "express";
 import path from "path";
 import agent from "../agent";
 import { Browser, AgentBrowser, Logger } from "nolita";
-import { ModelResponseSchema } from "nolita/dist/types/browser/actionStep.types";
 import inventory from "../extensions/inventory";
 import { CustomSchema } from "../extensions/schema";
 
@@ -19,7 +18,7 @@ const cors = {
 };
 
 app.all("*", function (req, res, next) {
-  const origin = cors.origin.includes(req.header("origin").toLowerCase())
+  const origin = cors.origin.includes(req?.headers?.origin?.toLowerCase() || "")
     ? req.headers.origin
     : cors.default;
   res.header("Access-Control-Allow-Origin", origin);
