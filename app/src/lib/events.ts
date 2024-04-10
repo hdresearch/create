@@ -29,7 +29,7 @@ export const listenToStream = (
   callback: (res: AgentEvent) => void,
 ) => {
   eventSource = new EventSource(
-    `http://localhost:3040/api/browse?url=${encodeURIComponent(url)}&objective=${encodeURIComponent(objective)}&maxIterations=10`,
+    `http://localhost:3040/api/browse?url=${encodeURIComponent(url)}&objective=where%20to%20find%20food%20in%20${encodeURIComponent(objective)}&maxIterations=10`,
   );
   eventSource.onmessage = function (event) {
     const response = JSON.parse(event.data);

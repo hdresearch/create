@@ -5,9 +5,9 @@ import { AgentEvent, listenToStream, stopListening } from "./lib/events";
 type Status = "working" | "success" | "fail" | "idle";
 
 function App() {
-  const [url, setUrl] = React.useState("https://www.google.com");
+  const [url] = React.useState("https://www.google.com");
   const [objective, setObjective] = React.useState(
-    "where can I get food in the west village?",
+    "West Village",
   );
   const [status, setStatus] = React.useState<Status>("idle");
   const [events, setEvents] = React.useState<string[]>([]);
@@ -60,11 +60,7 @@ function App() {
   return (
     <div className="items-center justify-center" style={{ padding: "8rem" }}>
       <div className="flex-col space-y-4">
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
+      <p>Enter a location where you want to find food.</p>
         <input
           type="text"
           value={objective}
@@ -77,7 +73,7 @@ function App() {
           <Icon status={status} />
           <p>{newest || "No events yet."}</p>
         </div>
-        <p>Restaurants: {restaurants.join(", ")}</p>
+        {restaurants.length > 0 && <p>Restaurants: {restaurants.join(", ")}</p>}
       </div>
     </div>
   );
