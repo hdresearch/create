@@ -1,0 +1,43 @@
+html,
+body {
+  font-family: sans-serif;
+}
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: calc(1rem);
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+}
+
+.blinker::after {
+  content: "_";
+  display: inline-block;
+  animation: blinker 0.75s ease-in-out infinite;
+}
