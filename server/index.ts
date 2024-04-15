@@ -4,6 +4,7 @@ import agent from "../agent";
 import { Browser, AgentBrowser, Logger } from "nolita";
 import inventory from "../extensions/inventory";
 import { CustomSchema } from "../extensions/schema";
+import "dotenv/config";
 
 const app = express();
 const port = 3040;
@@ -40,7 +41,20 @@ app.get("/api/browse", async (req, res) => {
   const logger = new Logger("info", (msg) => {
     return res.write(`data: ${msg}\n\n`);
   });
-  const agentBrowser = new AgentBrowser({ agent, browser, logger, inventory });
+  const agentBrowser = new AgentBrowser({ 
+    agent, 
+    browser, 
+    logger, 
+    inventory, 
+    ...(process.env.HDR_API_KEY
+      ? {
+          collectiveMemoryConfig: {
+            endpoint: "https://api.hdr.is",
+            apiKey: process.env.HDR_API_KEY,
+          },
+        }
+      : {}),
+  });
   const answer = await agentBrowser.browse(
     {
       startUrl: req.query.url as string,
