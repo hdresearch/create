@@ -6,6 +6,10 @@ const providerOptions = {
   provider: process.env.MODEL_PROVIDER,
 };
 
+if (!providerOptions.provider) {
+  throw new Error("No provider specified. Did you forget to make a .env file? See README.md for more.");
+}
+
 const modelApi = completionApiBuilder(providerOptions, {
   model: process.env.MODEL,
 });
