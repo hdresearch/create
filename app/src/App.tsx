@@ -5,10 +5,15 @@ import { AgentEvent, listenToStream, stopListening } from "./lib/events";
 type Status = "working" | "success" | "fail" | "idle";
 
 function App() {
+  // You can change the URL to any website for the objective.
   const [url] = React.useState("https://www.google.com");
+
   const [objective, setObjective] = React.useState(
-    "West Village",
+    "where to find food in",
   );
+  const [location, setLocation] = React.useState(
+    "West Village"
+  )
   const [status, setStatus] = React.useState<Status>("idle");
   const [events, setEvents] = React.useState<string[]>([]);
   const [restaurants, setRestaurants] = React.useState<string[]>([]);
@@ -52,7 +57,7 @@ function App() {
     setStatus("working");
     setRestaurants([]);
     setEvents([]);
-    listenToStream(url, objective, handleEvent);
+    listenToStream(url, objective, location, handleEvent);
   };
 
   const newest = events[events.length - 1];
@@ -78,8 +83,8 @@ function App() {
         <input
           className="p-2 border border-gray-300 rounded"
           type="text"
-          value={objective}
-          onChange={(e) => setObjective(e.target.value)}
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
         />
         <button className="bg-gray-200 p-1" onClick={() => start()}>
           {status !== "working" ? "Start" : "Stop"}
