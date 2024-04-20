@@ -70,7 +70,7 @@ function App() {
       <p className="max-w-prose">
         This application is a simple example of how you can use Nolita to build
         a web application that interacts with an agent. The agent in this
-        example is a simple web scraper that finds restaurants in a given
+        example is a simple web navigator that finds restaurants in a given
         location. Restaurants are provided as a custom typed response from the
         agent in <code>extensions/schema.ts</code>.
       </p>
