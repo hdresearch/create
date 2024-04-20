@@ -58,10 +58,14 @@ function App() {
   const newest = events[events.length - 1];
 
   return (
-    <div className="items-center justify-center" style={{ padding: "8rem" }}>
-      <div className="flex-col space-y-4">
+    <div className="items-center min-h-screen justify-center space-y-4 p-8">
+      <h1 className="text-4xl">This is a sample application made with <a className="border-b" href="https://nolita.ai">Nolita</a>.</h1>
+      <p>You can start your project by editing the <code>app/src/App.tsx</code> file.</p>
+      <p className="max-w-prose">To configure your agent logic, see the <code>agent</code> folder. You can also extend agent capabilities with personal information and custom types in the <code>extensions</code> folder, or additional back-end logic in the <code>server</code> folder.</p>
+      <div className="flex flex-col space-y-4 max-w-screen-md">
       <p>Enter a location where you want to find food.</p>
         <input
+          className="p-2 border border-gray-300 rounded"
           type="text"
           value={objective}
           onChange={(e) => setObjective(e.target.value)}
