@@ -62,7 +62,18 @@ function App() {
       <h1 className="text-4xl">This is a sample application made with <a className="border-b" href="https://nolita.ai">Nolita</a>.</h1>
       <p>You can start your project by editing the <code>app/src/App.tsx</code> file.</p>
       <p className="max-w-prose">To configure your agent logic, see the <code>agent</code> folder. You can also extend agent capabilities with personal information and custom types in the <code>extensions</code> folder, or additional back-end logic in the <code>server</code> folder.</p>
-      <div className="flex flex-col space-y-4 max-w-screen-md">
+      <p className="max-w-prose">
+        This application is a simple example of how you can use Nolita to build
+        a web application that interacts with an agent. The agent in this
+        example is a simple web scraper that finds restaurants in a given
+        location. Restaurants are provided as a custom typed response from the
+        agent in <code>extensions/schema.ts</code>.
+      </p>
+      <p className="max-w-prose">
+        You can modify the objective, query and target site in <code>App.tsx</code> and inspect
+        the events in your browser console.
+      </p>
+      <div className="flex flex-col space-y-4 max-w-screen-md border p-4">
       <p>Enter a location where you want to find food.</p>
         <input
           className="p-2 border border-gray-300 rounded"
@@ -70,15 +81,15 @@ function App() {
           value={objective}
           onChange={(e) => setObjective(e.target.value)}
         />
-        <button onClick={() => start()}>
+        <button className="bg-gray-200 p-1" onClick={() => start()}>
           {status !== "working" ? "Start" : "Stop"}
         </button>
-        <div className="flex items-center">
+      </div>
+      <div className="flex items-center">
           <Icon status={status} />
           <p>{newest || "No events yet."}</p>
         </div>
         {restaurants.length > 0 && <p>Restaurants: {restaurants.join(", ")}</p>}
-      </div>
     </div>
   );
 }
