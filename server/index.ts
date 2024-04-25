@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === "production") {
 app.get("/api/browse", async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   const browser = await Browser.create(true);
-  const logger = new Logger("info", (msg) => {
+  const logger = new Logger(["info"], (msg) => {
     return res.write(`data: ${msg}\n\n`);
   });
   const agentBrowser = new AgentBrowser({ 
