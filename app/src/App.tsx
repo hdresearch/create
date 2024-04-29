@@ -8,7 +8,7 @@ function App() {
   // You can change the URL to any website for the objective.
   const [url] = React.useState("https://www.google.com");
 
-  const [objective, setObjective] = React.useState(
+  const [objective] = React.useState(
     "where to find food in",
   );
   const [location, setLocation] = React.useState(
