@@ -20,31 +20,33 @@ function App() {
 
   const handleEvent = (input: AgentEvent) => {
     setEvents((prev: string[]) => {
-      if (input?.result?.kind === "ObjectiveComplete") {
-        if (input?.result?.result?.objectiveComplete?.restaurants) {
-          setRestaurants(input?.result?.result?.objectiveComplete?.restaurants);
+      if (input?.kind === "ObjectiveComplete") {
+        // @ts-expect-error - we know this is an ObjectiveComplete event
+        if (input?.result?.objectiveComplete?.restaurants) {
+        // @ts-expect-error - we know this is an ObjectiveComplete event
+          setRestaurants(input?.result?.objectiveComplete?.restaurants);
         }
-    }
+      }
       if (input?.progressAssessment) {
         return [...prev, `Progress: ${input.description}`];
       }
       return prev;
     });
 
-    if (input?.result) {
-      if (input.result.kind === "ObjectiveComplete") {
-        setStatus("success");
-        setEvents((prev: string[]) => [
-          ...prev,
-          `Success: ${typeof input?.result?.result !== "string" ? input?.result?.result.progressAssessment : input?.result?.result}`,
-        ]);
-      } else if (input.result.kind === "ObjectiveFailed") {
-        setStatus("fail");
-        setEvents((prev: string[]) => [
-          ...prev,
-          `Fail: ${input?.result?.result}`,
-        ]);
-      }
+    if (input.kind === "ObjectiveComplete") {
+      setStatus("success");
+      setEvents((prev: string[]) => [
+        ...prev,
+        `Success: ${input?.result?.description}`,
+      ]);
+      // @ts-expect-error - we know this is an ObjectiveFailed event
+    } else if (input?.result?.kind === "ObjectiveFailed") {
+      setStatus("fail");
+      setEvents((prev: string[]) => [
+        ...prev,
+        // @ts-expect-error - we know this is an ObjectiveFailed event
+        `Fail: ${input?.result?.result}`,
+      ]);
     }
   };
 
