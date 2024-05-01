@@ -8,6 +8,8 @@ You'll first want to `cp .env.example .env` and configure your LLM.
 
 Then, to get started hacking, just run `npm run dev`. To run this repo in production, you can run `npm run build && npm run start`.
 
+In development, your app is available at `http://localhost:5173`, talking to the server at `http://localhost:3040`. By default, in production your app is available at `http://localhost`.
+
 ### `agent`
 
 This folder includes the configuration for your agent, which is powered by your LLM. Your LLM has its own system and agent prompt. Both are configurable here.

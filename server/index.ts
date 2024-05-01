@@ -7,7 +7,7 @@ import { CustomSchema } from "../extensions/schema";
 import "dotenv/config";
 
 const app = express();
-const port = 3040;
+const port = process.env.NODE_ENV === "production" ? 80 : 3040;
 
 app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);
