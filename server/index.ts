@@ -49,7 +49,7 @@ app.get("/api/browse", async (req, res) => {
     ...(process.env.HDR_API_KEY
       ? {
           collectiveMemoryConfig: {
-            endpoint: "https://api.hdr.is",
+            endpoint: process.env.HDR_ENDPOINT || "https://api.hdr.is",
             apiKey: process.env.HDR_API_KEY,
           },
         }
