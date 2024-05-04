@@ -3,25 +3,40 @@
   "version": "1.0.0",
   "description": "Template repository for framework.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "app-dev": "cd app && npm run dev",
-    "build": "cd app && npm run build",
-    "dev": "concurrently \"npm run app-dev\" \"npm run server\"",
-    "postinstall": "cd app && npm install",
+    "build": "tsc ./app && vite build ./app",
+    "dev": "concurrently \"npm run fe-dev\" \"npm run server\"",
+    "fe-dev": "cd app && vite",
     "server": "npx tsx ./server/index.ts",
     "start": "NODE_ENV=production npm run server"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.6.8",
     "dotenv": "^16.4.5",
-    "nolita": "^1.2.2"
+    "nolita": "^1.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
     "concurrently": "^8.2.2",
     "express": "^4.19.2",
+    "postcss": "^8.4.38",
     "tsx": "^4.7.2",
-    "typescript": "^5.4.4"
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.4",
+    "vite": "^5.2.0"
   }
 }
