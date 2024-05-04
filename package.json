@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc ./app && vite build ./app",
+    "build": "cd app && tsc && vite build",
     "dev": "concurrently \"npm run fe-dev\" \"npm run server\"",
     "fe-dev": "cd app && vite",
     "server": "npx tsx ./server/index.ts",
