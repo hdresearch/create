@@ -1,5 +1,7 @@
 let eventSource: EventSource | null = null;
 
+const baseUrl = process.env.NODE_ENV === 'development' ? `http://localhost:3040` : '';
+
 type ObjectiveCompleteResult = {
   description: string;
   objectiveComplete: {
@@ -31,7 +33,7 @@ export const listenToStream = (
   callback: (res: AgentEvent) => void,
 ) => {
   eventSource = new EventSource(
-    `http://localhost:3040/api/browse?url=${encodeURIComponent(url)}&objective=${encodeURIComponent(objective)}%20${encodeURIComponent(location)}&maxIterations=10`,
+    `${baseUrl}/api/browse?url=${encodeURIComponent(url)}&objective=${encodeURIComponent(objective)}%20${encodeURIComponent(location)}&maxIterations=10`,
   );
   eventSource.onmessage = function (event) {
     const response = JSON.parse(event.data);
