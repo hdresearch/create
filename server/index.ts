@@ -5,6 +5,12 @@ import { Browser, AgentBrowser, Logger } from "nolita";
 import inventory from "../extensions/inventory";
 import { CustomSchema } from "../extensions/schema";
 import "dotenv/config";
+import { fileURLToPath } from "url";
+
+// add dirname var for esm
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const app = express();
 const port = process.env.NODE_ENV === "production" ? 80 : 3040;
