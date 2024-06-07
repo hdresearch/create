@@ -1,6 +1,5 @@
 // Expand the schema of how responses should look.
-import { ModelResponseSchema } from "nolita/dist/types/browser/actionStep.types";
-import { ObjectiveComplete } from "nolita/dist/types/browser/objectiveComplete.types";
+import { ModelResponseSchema, ObjectiveComplete } from "nolita";
 import { z } from "zod";
 
 export const CustomSchema = ModelResponseSchema(ObjectiveComplete.extend({
