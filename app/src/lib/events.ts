@@ -36,7 +36,12 @@ export const listenToStream = (
     `${baseUrl}/api/browse?url=${encodeURIComponent(url)}&objective=${encodeURIComponent(objective)}%20${encodeURIComponent(location)}&maxIterations=10`,
   );
   eventSource.onmessage = function (event) {
-    const response = JSON.parse(event.data);
+    let response;
+    try {
+      response = JSON.parse(event.data);
+    } catch (e) {
+      return;
+    }
     console.log(response);
     if (response.done) {
       console.log("done");
