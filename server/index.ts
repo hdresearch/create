@@ -53,7 +53,7 @@ app.get("/api/browse", async (req, res) => {
     } catch (e) {}
     return res.write(`data: ${inc.message || msg}\n\n`);
   });
-  const browser = await Browser.launch(false, agent, logger, {
+  const browser = await Browser.launch(true, agent, logger, {
     inventory,
     ...(process.env.HDR_API_KEY || hdrApiKey
       ? {
