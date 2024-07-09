@@ -6,7 +6,7 @@ type Status = "working" | "success" | "fail" | "idle";
 
 function App() {
   // You can change the URL to any website for the objective.
-  const [url] = React.useState("https://www.google.com");
+  const [url] = React.useState("https://www.duckduckgo.com");
 
   const [objective] = React.useState(
     "where to find food in",
@@ -20,11 +20,11 @@ function App() {
 
   const handleEvent = (input: AgentEvent) => {
     setEvents((prev: string[]) => {
-      if (input?.kind === "ObjectiveComplete") {
+      if (input?.["objectiveComplete"]) {
         // @ts-expect-error - we know this is an ObjectiveComplete event
-        if (input?.result?.objectiveComplete?.restaurants) {
+        if (input?.objectiveComplete?.restaurants) {
         // @ts-expect-error - we know this is an ObjectiveComplete event
-          setRestaurants(input?.result?.objectiveComplete?.restaurants);
+          setRestaurants(input?.objectiveComplete?.restaurants);
         }
       }
       if (input?.progressAssessment) {
@@ -33,19 +33,19 @@ function App() {
       return prev;
     });
 
-    if (input.kind === "ObjectiveComplete") {
+    if (input?.["objectiveComplete"]) {
       setStatus("success");
       setEvents((prev: string[]) => [
         ...prev,
-        `Success: ${input?.result?.description}`,
+        `Success: ${input?.objectiveComplete?.result}`,
       ]);
       // @ts-expect-error - we know this is an ObjectiveFailed event
-    } else if (input?.result?.kind === "ObjectiveFailed") {
+    } else if (input?.["objectiveFailed"]) {
       setStatus("fail");
       setEvents((prev: string[]) => [
         ...prev,
         // @ts-expect-error - we know this is an ObjectiveFailed event
-        `Fail: ${input?.result?.result}`,
+        `Fail: ${input?.ObjectiveFailed?.result}`,
       ]);
     }
   };
