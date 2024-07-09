@@ -1,10 +1,8 @@
 // Expand the schema of how responses should look.
-import { ModelResponseSchema, ObjectiveComplete } from "nolita";
 import { z } from "zod";
 
-export const CustomSchema = ModelResponseSchema(ObjectiveComplete.extend({
-  restaurants: z.array(
-    z.string().optional().describe("The name of a restaurant")
-)}));
+export const CustomSchema = z.object({
+  restaurants: z.array(z.string().describe("The name of a restaurant")),
+});
 
 export type CustomSchemaType = z.infer<typeof CustomSchema>;

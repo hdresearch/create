@@ -1,15 +1,18 @@
 import express from "express";
 import path from "path";
 import agent from "../agent";
-import { Browser, AgentBrowser, Logger } from "nolita";
+import { Browser, Logger } from "nolita";
 import inventory from "../extensions/inventory";
 import { CustomSchema } from "../extensions/schema";
+import { nolitarc } from "../agent/config";
 import "dotenv/config";
 import { fileURLToPath } from "url";
 
 // add dirname var for esm
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const { hdrApiKey } = nolitarc();
 
 
 const app = express();
@@ -43,33 +46,28 @@ if (process.env.NODE_ENV === "production") {
 
 app.get("/api/browse", async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
-  const browser = await Browser.launch(true, agent);
   const logger = new Logger(["info"], (msg) => {
-    return res.write(`data: ${msg}\n\n`);
+    let inc = msg;
+    try {
+      inc = JSON.parse(msg);
+    } catch (e) {}
+    return res.write(`data: ${inc.message || msg}\n\n`);
   });
-  const agentBrowser = new AgentBrowser({ 
-    agent, 
-    browser, 
-    logger, 
-    inventory, 
-    ...(process.env.HDR_API_KEY
+  const browser = await Browser.launch(true, agent, logger, {
+    inventory,
+    ...(process.env.HDR_API_KEY || hdrApiKey
       ? {
-          collectiveMemoryConfig: {
-            endpoint: process.env.HDR_ENDPOINT || "https://api.hdr.is",
-            apiKey: process.env.HDR_API_KEY,
-          },
+          endpoint: process.env.HDR_ENDPOINT || "https://api.hdr.is",
+          apiKey: process.env.HDR_API_KEY || hdrApiKey,
         }
       : {}),
   });
-  const answer = await agentBrowser.browse(
-    {
-      startUrl: req.query.url as string,
-      objective: [req.query.objective as string],
-      maxIterations: parseInt(req.query.maxIterations as string) || 10,
-    },
-    CustomSchema,
-  );
-  await agentBrowser.close();
+  const page = await browser.newPage({});
+  await page.goto(req.query.url as string);
+  const answer = await page.browse(req.query.objective, {
+    schema: CustomSchema,
+    maxTurns: parseInt(req.query.maxIterations as string) || 10,
+  })
   if (answer) {
     res.write(`data: ${JSON.stringify(answer)}\n\n`);
     res.write(`data: {"done": true}\n\n`);
