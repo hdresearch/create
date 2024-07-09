@@ -2,30 +2,22 @@ let eventSource: EventSource | null = null;
 
 const baseUrl = process.env.NODE_ENV === 'development' ? `http://localhost:3040` : '';
 
-type ObjectiveCompleteResult = {
-  description: string;
-  objectiveComplete: {
+export type AgentEvent = {
+  command?: string[];
+  done?: boolean;
+  progressAssessment?: string;
+  description?: string;
+  objectiveComplete?: {
     kind: "ObjectiveComplete";
     restaurants: string[];
     result: string;
   }
+  objectiveFailed: {
+    kind: "ObjectiveFailed";
+    result: string;
+  }
 };
 
-type ObjectiveFailedResult = {
-  description: string;
-  kind: "ObjectiveFailed";
-  result: string;
-};
-
-type Result = ObjectiveCompleteResult | ObjectiveFailedResult;
-
-export type AgentEvent = {
-  done?: boolean;
-  kind?: "ObjectiveComplete";
-  result?: Result;
-  progressAssessment?: string;
-  description?: string;
-};
 export const listenToStream = (
   url: string,
   objective: string,

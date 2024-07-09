@@ -21,9 +21,7 @@ function App() {
   const handleEvent = (input: AgentEvent) => {
     setEvents((prev: string[]) => {
       if (input?.["objectiveComplete"]) {
-        // @ts-expect-error - we know this is an ObjectiveComplete event
         if (input?.objectiveComplete?.restaurants) {
-        // @ts-expect-error - we know this is an ObjectiveComplete event
           setRestaurants(input?.objectiveComplete?.restaurants);
         }
       }
@@ -39,13 +37,11 @@ function App() {
         ...prev,
         `Success: ${input?.objectiveComplete?.result}`,
       ]);
-      // @ts-expect-error - we know this is an ObjectiveFailed event
     } else if (input?.["objectiveFailed"]) {
       setStatus("fail");
       setEvents((prev: string[]) => [
         ...prev,
-        // @ts-expect-error - we know this is an ObjectiveFailed event
-        `Fail: ${input?.ObjectiveFailed?.result}`,
+        `Fail: ${input?.objectiveFailed?.result}`,
       ]);
     }
   };
